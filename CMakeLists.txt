@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(BioSemi VERSION 1.12.0
-	LANGUAGES CXX)
+	LANGUAGES C CXX)
 include(Findliblsl.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 # Boost
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -39,13 +39,13 @@ add_executable(${target}
 
 target_link_libraries(${target}
 	PRIVATE
-	Qt5::Widgets
+	Qt6::Widgets
 	Boost::thread
 	LSL::lsl
 )
 
 if(APPLE)
-	target_link_libraries(${target} PRIVATE "DLL/liblabview_dll.0.0.1.dylib")
+	target_link_libraries(${target} PRIVATE "/Users/thibautmorant/Documents/GitHub/App-BioSemi/DLL/Mac/liblabview_dll.0.0.1.dylib")
 elseif(UNIX)
 	find_library(LIBUSB usb-1.0)
 	if(NOT LIBUSB)
@@ -55,7 +55,7 @@ elseif(UNIX)
 	#target_link_libraries(${target} PRIVATE "DLL/bsif_libusb.o")
 endif()
 
-# Deployment # 
+# Deployment #
 installLSLApp(${target})  # Will handle Qt and LSL libraries
 installLSLAuxFiles(${target} biosemi_config.cfg)
 installLSLAuxFiles(${target} "directory" DLL)
